@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Roboto_Condensed, Geist } from "next/font/google";
-import "./globals.css";
+import { Roboto_Condensed } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import "./globals.css";
 
 const robotoCondensed = Roboto_Condensed({
   variable: "--font-roboto-condensed",
@@ -25,14 +24,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={cn("h-full", "antialiased", robotoCondensed.className, "font-sans", geist.variable)}
-      suppressHydrationWarning
+    <ClerkProvider
+      signInUrl="/sign-in"
+      signUpUrl="/sign-up"
+      afterSignInUrl="/dashboard"
+      afterSignUpUrl="/dashboard"
+      appearance={{
+        layout: {
+          unsafe_disableDevelopmentModeWarnings: true,
+        },
+      }}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-      </body>
-    </html>
+      <html
+        lang="en"
+        className={cn(
+          "h-full",
+          "antialiased",
+          robotoCondensed.className,
+          "font-sans"
+        )}
+        suppressHydrationWarning
+      >
+        <body className="min-h-full flex flex-col">
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
