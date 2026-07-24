@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Condensed } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import Provider from "./provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 
@@ -40,14 +41,15 @@ export default function RootLayout({
         className={cn(
           "h-full",
           "antialiased",
-          robotoCondensed.className,
-          "font-sans"
+          robotoCondensed.className
         )}
         suppressHydrationWarning
       >
-        <body className="min-h-full flex flex-col">
-          {children}
-        </body>
+        <Provider>
+          <body className="min-h-full flex flex-col">
+            {children}
+          </body>
+        </Provider>
       </html>
     </ClerkProvider>
   );
