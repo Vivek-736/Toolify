@@ -459,3 +459,74 @@ Whenever a new reusable component is created:
 - Update the component's status from ⏳ Planned to ✅ Completed.
 
 This registry should always reflect the current UI state of Toolify.
+
+# UI Consistency Registry
+
+This registry tracks the foundational visual patterns used across the Toolify application to ensure all future components match the established design language.
+
+## Baseline — Established 2026-07-24
+
+### Component: Chat Sidebar & Navigation
+File: `src/components/chat/Sidebar.tsx`, `src/components/chat/ChatHeader.tsx`
+Last updated: 2026-07-24
+
+| Property         | Class           |
+| ---------------- | --------------- |
+| Background       | `bg-slate-50/50` (sidebar), `bg-white` (header) |
+| Border           | `border-slate-200` (sidebar edge), `border-slate-100` (header edge) |
+| Border radius    | `rounded-lg` (list items), `rounded-xl` (user profile box) |
+| Text — primary   | `text-slate-900` (brand), `text-slate-800` (header title) |
+| Text — secondary | `text-slate-700` (list item text), `text-slate-600` (header buttons) |
+| Text — muted     | `text-slate-500` (group headers), `text-slate-400` (subtext/icons) |
+| Spacing          | `p-4` (header/footer padding), `px-3 py-2.5` (list items) |
+| Hover state      | `hover:bg-slate-100 text-slate-700` (items), `hover:bg-slate-50` (buttons) |
+| Accent usage     | `bg-blue-50 text-blue-700` (active item), `bg-blue-600` (active indicator strip) |
+
+**Pattern notes:**
+- The sidebar uses a soft `slate-50/50` background to contrast slightly with the pure white main content area.
+- Active states in navigation always use a very light blue background (`bg-blue-50`) with primary blue text (`text-blue-700`) and a solid blue left-border indicator (`w-1 bg-blue-600`).
+- Icon buttons heavily use `text-slate-400` that transitions to `text-slate-600` on hover.
+
+---
+
+### Component: Chat Interface (Input & Messages)
+File: `src/components/chat/ChatInput.tsx`, `src/components/chat/MessageList.tsx`
+Last updated: 2026-07-24
+
+| Property         | Class           |
+| ---------------- | --------------- |
+| Background       | `bg-white` (AI bubble, input container), `bg-blue-50/80` (User bubble) |
+| Border           | `border-slate-200` (AI bubble, input), `border-blue-100/50` (User bubble) |
+| Border radius    | `rounded-2xl` (input, bubbles), `rounded-full` (icon buttons) |
+| Text — primary   | `text-slate-800` (message content, input text) |
+| Text — muted     | `text-slate-400` (timestamps, action icons, disclaimer) |
+| Spacing          | `px-5 py-4` (message bubbles), `px-4 py-4` (input inner) |
+| Hover state      | `hover:bg-slate-100 text-slate-700` (action buttons) |
+| Shadow           | `shadow-sm` (containers), `shadow-md shadow-blue-500/20` (primary send button) |
+| Focus state      | `focus-within:ring-2 focus-within:ring-blue-100` (input container) |
+
+**Pattern notes:**
+- Message bubbles use asymmetric border radiuses. User bubbles have `rounded-tr-sm`, and AI bubbles have `rounded-tl-sm`.
+- The user bubble stands out softly using `bg-blue-50/80` and `border-blue-100/50`.
+- The main send action button leverages the primary brand color (`bg-blue-600`) and a custom soft colored shadow (`shadow-blue-500/20`).
+
+---
+
+### Component: Dashboard Welcome Cards
+File: `src/app/dashboard/page.tsx`
+Last updated: 2026-07-24
+
+| Property         | Class           |
+| ---------------- | --------------- |
+| Background       | `bg-white` (card surface) |
+| Border           | `border-slate-200` (card edge) |
+| Border radius    | `rounded-2xl` (cards), `rounded-xl` (icon wrappers) |
+| Text — primary   | `text-slate-800` (card title), `text-slate-900` (page heading) |
+| Text — secondary | `text-slate-500` (card description, page sub-heading) |
+| Spacing          | `p-5` (card inner padding), `gap-4` (grid layout) |
+| Hover state      | `hover:border-slate-300 hover:shadow-sm` (card hover), `group-hover:scale-110` (icon scale) |
+
+**Pattern notes:**
+- Feature cards use a soft hover effect, primarily transitioning the border color and elevating slightly with `shadow-sm`.
+- Micro-interactions are encouraged, such as `group-hover:scale-110 transition-transform` on the icons within the cards.
+- Each feature card utilizes a specific accent color for its icon wrapper (e.g., `text-blue-600 bg-blue-100/50`, `text-indigo-600 bg-indigo-100/50`).
