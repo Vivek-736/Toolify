@@ -82,19 +82,6 @@ This is the single source of truth for project progress. Every AI session must u
 
 ---
 
-## Future Tools
-
-- [ ] PDF Chat
-- [ ] Website Summarizer
-- [ ] GitHub Search
-- [ ] Weather
-- [ ] Image Generation
-- [ ] File Analysis
-- [ ] Gmail Integration
-- [ ] Calendar Integration
-
----
-
 # Decisions Made During Build
 
 ## Authentication
