@@ -36,21 +36,21 @@ export default function RootLayout({
         },
       }}
     >
-      <html
-        lang="en"
-        className={cn(
-          "h-full",
-          "antialiased",
-          robotoCondensed.className
-        )}
-        suppressHydrationWarning
-      >
-        <Provider>
+      <Provider>
+        <html
+          lang="en"
+          className={cn(
+            "h-full",
+            "antialiased",
+            robotoCondensed.className
+          )}
+          suppressHydrationWarning
+        >
           <body className="min-h-full flex flex-col">
             {children}
           </body>
-        </Provider>
-      </html>
+        </html>
+      </Provider>
     </ClerkProvider>
   );
 }
