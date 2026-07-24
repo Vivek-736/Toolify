@@ -45,7 +45,14 @@
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-surface: var(--surface, #111827);
+  --color-surface-secondary: var(--surface-secondary, #1a2233);
+  --color-surface-tertiary: var(--surface-tertiary, #20293d);
+  --color-text-primary: var(--text-primary, #ffffff);
+  --color-text-secondary: var(--text-secondary, #c3cad9);
+  --color-text-muted: var(--text-muted, #94a3b8);
+  --color-accent-hover: #5948ff;
+  --color-accent-light: #8d84ff;
 }
 
 :root {
@@ -127,4 +134,23 @@
   html {
     @apply font-sans;
   }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(147, 197, 253, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(147, 197, 253, 0.6);
 }

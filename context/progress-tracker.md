@@ -12,9 +12,9 @@ This is the single source of truth for project progress. Every AI session must u
 
 **Current Phase:** Phase 1 — Foundation
 
-**Last Completed:** Authentication & Database Setup
+**Last Completed:** Landing Page
 
-**Next Task:** Landing Page
+**Next Task:** Chat Page Layout
 
 ---
 
@@ -27,7 +27,7 @@ This is the single source of truth for project progress. Every AI session must u
 - [x] 03 Neon PostgreSQL Setup
 - [x] 04 Drizzle ORM Configuration
 - [x] 05 User Database Storage
-- [ ] 06 Landing Page
+- [x] 06 Landing Page
 
 ---
 

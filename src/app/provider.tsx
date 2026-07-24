@@ -23,9 +23,7 @@ function Provider({ children }: { children: React.ReactNode }) {
 
     return (
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-            <div>
-                {children}
-            </div>
+            {children}
         </UserDetailContext.Provider>
     )
 }

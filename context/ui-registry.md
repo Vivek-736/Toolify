@@ -58,7 +58,7 @@ Responsibilities
 
 # Landing Page
 
-Status: ⏳ Planned
+Status: ✅ Completed
 
 Folder
 
