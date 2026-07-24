@@ -224,7 +224,6 @@ LLM chooses
 - YouTube
 
 No keyword matching.
-
 Pure LangGraph routing.
 
 ---
@@ -310,50 +309,3 @@ Optimize
 - Streaming
 - Caching
 - Lazy Loading
-
----
-
-# Phase 7 — Future Tools
-
-The architecture must allow adding tools without changing the chat flow.
-
-Planned Tools
-
-- PDF Chat
-- Image Generation
-- Website Summarizer
-- GitHub Search
-- Gmail
-- Calendar
-- Weather
-- File Analysis
-- Deep Research
-
-Adding a new tool should only require
-
-1. Create Tool
-2. Register in LangGraph
-3. Update Agent Prompt
-
-Nothing else.
-
----
-
-# Current Progress
-
-| Feature | Status |
-|----------|--------|
-| Project Setup | ✅ Completed |
-| Clerk Authentication | ✅ Completed |
-| Neon Database | ✅ Completed |
-| Drizzle ORM | ✅ Completed |
-| User Storage | ✅ Completed |
-| Landing Page | ⏳ Pending |
-| Chat UI | ⏳ Pending |
-| LangGraph | ⏳ Pending |
-| Puter.js | ⏳ Pending |
-| Tavily | ⏳ Pending |
-| YouTube Tool | ⏳ Pending |
-| Chat Persistence | ⏳ Pending |
-| Streaming | ⏳ Pending |
-| UI Polish | ⏳ Pending |

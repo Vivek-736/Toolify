@@ -1,27 +1,28 @@
-# Memory — Landing Page & Auth Layout Refinements
+# Memory — Phase 2: Chat Experience Implementation
 
-Last updated: 2026-07-24T16:12:26+05:30
+Last updated: 2026-07-24T21:52:04+05:30
 
 ## What was built
-- Built a modular, AI-first landing page (`src/app/page.tsx`) utilizing new components in `src/components/home/`: `Navbar.tsx`, `Hero.tsx`, `Features.tsx`, `HowItWorks.tsx`, and `Footer.tsx`.
-- Implemented a custom glassy, scroll-responsive navbar using `framer-motion` and smooth-scrolling anchor links.
-- Fixed the authentication layout (`src/app/(auth)/layout.tsx`) styling to correctly center content vertically using `min-h-[100dvh]`, `flex-col`, and `my-auto`, replacing flawed standard flex-centering that clipped the UI on small viewports.
-- Fixed `src/app/provider.tsx` by removing an invalid `<div>` wrapper that was breaking the Next.js `<html>` and `<body>` flexbox layout.
-- Added a custom light blue, semi-transparent webkit scrollbar globally in `globals.css`.
+- **Database Schema**: Expanded `src/config/schema.ts` to include `chatsTable` and `messagesTable` for chat persistence.
+- **Chat Layout**: Created `src/app/dashboard/layout.tsx` incorporating a main content area and a collapsible sidebar.
+- **Sidebar Component**: Developed `src/components/chat/Sidebar.tsx` with a fully functional collapsible state. In its collapsed form, it cleanly displays only the favicon (which acts as the expand trigger), the "new chat" plus icon, chat history icons, and the Clerk `UserButton`.
+- **Chat Page UI**: Implemented `src/components/chat/ChatHeader.tsx`, `ChatInput.tsx`, and `MessageList.tsx` to match the exact visual specifications from the design files.
+- **Dynamic Routing**: Built `src/app/dashboard/page.tsx` (the Welcome Screen) and `src/app/dashboard/[chatId]/page.tsx` (the individual conversation view).
 
 ## Decisions made
-- We rely on Clerk's middleware to intercept standard Next.js `<Link href="/dashboard">` components for routing to authentication rather than using Clerk's `<SignInButton>`. This prevents a bug where soft-navigating with Clerk's button didn't reset the browser's scroll position, which broke the UI when scrolled halfway down the landing page.
-- Utilized `min-h-[100dvh]` for full-height layouts to prevent the mobile browser address bar from covering content.
+- We opted for a sleek collapsible sidebar that relies on the main app logo (favicon) as the expand trigger when closed, keeping the UI minimal and clutter-free without relying on absolute positioning.
+- Active chat highlighting is strictly determined dynamically by matching the `chat.id` against the Next.js `[chatId]` route parameter.
 
 ## Problems solved
-- **Auth Layout Cutoff & Scroll Position Bug:** Identified that Clerk's `<SignInButton>` was persisting scroll state during soft navigation, pushing the auth layout off-screen. Replaced all instances with `<Link href="/dashboard">`.
-- **Invalid DOM Structure:** Diagnosed and fixed the layout breaking due to an invalid `<div>` wrapping the root `<html>` tag inside `provider.tsx`.
+- **Next.js 15+ Async Params**: Resolved the "params is a Promise" route error in `[chatId]/page.tsx` by correctly unwrapping it using `await params`.
+- **UI Polish**: Fixed multiple layout bugs including absolute positioning overlap of sidebar toggle buttons and inappropriately hardcoded active states in the chat history.
 
 ## Current state
-- The Landing Page and Auth Layouts are structurally sound, styled accurately to the project tokens, fully responsive, and visually polished. Task 06 (Landing Page) is essentially complete.
+- The Phase 2 Chat Experience is completely finished. The UI looks polished, matches the design mockups precisely, and scales well. 
 
 ## Next session starts with
-- Check `context/progress-tracker.md` to identify the next task to build, which is likely transitioning into the Dashboard interface or Core Chat UI.
+- Move into **Phase 3: LangGraph Agent** (starting with task 06: LangGraph Foundation). See `context/progress-tracker.md`.
+- *Note:* We will need to run `pnpm run db:push` to push the new database schema to Neon, as the command was skipped in this session.
 
 ## Open questions
 - None at this time.
