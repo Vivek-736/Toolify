@@ -10,11 +10,11 @@ This is the single source of truth for project progress. Every AI session must u
 
 **Project:** Toolify
 
-**Current Phase:** Phase 1 — Foundation
+**Current Phase:** Phase 3 — LangGraph Agent
 
-**Last Completed:** Landing Page
+**Last Completed:** Chat Page UI & Persistence (Phase 2)
 
-**Next Task:** Chat Page Layout
+**Next Task:** LangGraph Foundation
 
 ---
 
@@ -22,63 +22,48 @@ This is the single source of truth for project progress. Every AI session must u
 
 ## Phase 1 — Foundation
 
-- [x] 01 Project Initialization
-- [x] 02 Clerk Authentication
-- [x] 03 Neon PostgreSQL Setup
-- [x] 04 Drizzle ORM Configuration
-- [x] 05 User Database Storage
-- [x] 06 Landing Page
+- [x] 01 Landing Page
+- [x] 02 Authentication
+- [x] 03 Database
 
 ---
 
-## Phase 2 — Chat Interface
+## Phase 2 — Chat Experience
 
-- [ ] 07 Chat Page Layout
-- [ ] 08 Sidebar
-- [ ] 09 Chat Window
-- [ ] 10 Chat Input
-- [ ] 11 Conversation History
-- [ ] 12 Chat Persistence
+- [x] 04 Chat Page UI
+- [x] 05 Chat Persistence
 
 ---
 
 ## Phase 3 — LangGraph Agent
 
-- [ ] 13 LangGraph Setup
-- [ ] 14 Agent State
-- [ ] 15 Agent Router
-- [ ] 16 System Prompt
-- [ ] 17 General Chat Tool (Puter.js)
+- [ ] 06 LangGraph Foundation
+- [ ] 07 General Chat Tool
 
 ---
 
-## Phase 4 — AI Tools
+## Phase 4 — Tool Calling
 
-- [ ] 18 Tavily Search Tool
-- [ ] 19 YouTube Summary Tool
-- [ ] 20 Automatic Tool Selection
-- [ ] 21 Tool Result Formatting
+- [ ] 08 Tavily Search Tool
+- [ ] 09 YouTube Summary Tool
+- [ ] 10 Tool Routing
 
 ---
 
-## Phase 5 — User Experience
+## Phase 5 — Chat Features
 
-- [ ] 22 Streaming Responses
-- [ ] 23 Typing Indicator
-- [ ] 24 Chat Auto Titles
-- [ ] 25 Markdown Rendering
-- [ ] 26 Code Block Highlighting
-- [ ] 27 Copy Response Button
+- [ ] 11 Streaming Responses
+- [ ] 12 Chat History
+- [ ] 13 Conversation Memory
 
 ---
 
 ## Phase 6 — Polish
 
-- [ ] 28 Responsive Design
-- [ ] 29 Loading States
-- [ ] 30 Error Handling
-- [ ] 31 Empty States
-- [ ] 32 Performance Optimization
+- [ ] 14 Landing Page Polish
+- [ ] 15 Chat UI Polish
+- [ ] 16 Error Handling
+- [ ] 17 Performance
 
 ---
 
@@ -96,6 +81,7 @@ This is the single source of truth for project progress. Every AI session must u
 
 - Neon PostgreSQL is the primary database.
 - Drizzle ORM is the only ORM.
+- User storage is completed.
 - Every chat belongs to a user.
 - Every message belongs to a chat.
 
@@ -113,13 +99,13 @@ This is the single source of truth for project progress. Every AI session must u
 
 ## UI
 
-Planned pages:
+Current Pages
 
-- Home Page
-- Chat Page
-- Clerk Authentication Pages
+- Landing Page ✅
+- Chat Page ⏳
+- Clerk Authentication Pages ✅
 
-UI components will be built with shadcn/ui and Tailwind CSS v4.
+UI components are built with shadcn/ui and Tailwind CSS v4.
 
 ---
 
@@ -142,10 +128,10 @@ UI components will be built with shadcn/ui and Tailwind CSS v4.
 
 ## Reminder for Future AI Sessions
 
-After completing **any** feature:
+After completing any feature:
 
-1. Mark the task as completed.
-2. Update the "Last Completed" field.
-3. Update the "Next Task" field.
-4. Record any important architectural decisions.
-5. If new UI components are created, also update `ui-registry.md`.
+1. Mark the feature as completed.
+2. Update the **Last Completed** field.
+3. Update the **Next Task** field.
+4. Record important architectural decisions if applicable.
+5. Update `ui-registry.md` whenever a reusable UI component is added.
