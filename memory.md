@@ -1,28 +1,28 @@
-# Memory — Phase 2: Chat Experience Implementation
+# Memory — Phase 3: LangGraph Foundation
 
-Last updated: 2026-07-24T21:52:04+05:30
+Last updated: 2026-07-24T22:30:00+05:30
 
 ## What was built
-- **Database Schema**: Expanded `src/config/schema.ts` to include `chatsTable` and `messagesTable` for chat persistence.
-- **Chat Layout**: Created `src/app/dashboard/layout.tsx` incorporating a main content area and a collapsible sidebar.
-- **Sidebar Component**: Developed `src/components/chat/Sidebar.tsx` with a fully functional collapsible state. In its collapsed form, it cleanly displays only the favicon (which acts as the expand trigger), the "new chat" plus icon, chat history icons, and the Clerk `UserButton`.
-- **Chat Page UI**: Implemented `src/components/chat/ChatHeader.tsx`, `ChatInput.tsx`, and `MessageList.tsx` to match the exact visual specifications from the design files.
-- **Dynamic Routing**: Built `src/app/dashboard/page.tsx` (the Welcome Screen) and `src/app/dashboard/[chatId]/page.tsx` (the individual conversation view).
+- **Graph State**: Created `src/lib/agent/state.ts` defining the schema for the agent's memory using Langchain's `BaseMessage`.
+- **Graph Nodes**: Created `src/lib/agent/nodes.ts` which initializes the `gemini-2.5-flash` model and defines the `callModel` logic.
+- **Graph Logic**: Created `src/lib/agent/graph.ts` which wires up the `callModel` node to the GraphState and handles conditional routing (ready to support tool nodes later).
+- **API Endpoint**: Created `src/app/api/chat/route.ts` which exposes the LangGraph application to our frontend, converting raw messages to Langchain messages, running the graph, and returning the AI's response.
+- **UI Consistency**: We ran `/imprint` and updated `ui-registry.md` to track all visual patterns established during Phase 2 (Sidebar, ChatHeader, ChatInput, MessageList, Dashboard Welcome).
 
 ## Decisions made
-- We opted for a sleek collapsible sidebar that relies on the main app logo (favicon) as the expand trigger when closed, keeping the UI minimal and clutter-free without relying on absolute positioning.
-- Active chat highlighting is strictly determined dynamically by matching the `chat.id` against the Next.js `[chatId]` route parameter.
+- We adopted `@langchain/google-genai` and `@langchain/langgraph` to create a modular agent architecture.
+- For now, the agent defaults to directly answering questions without tool invocations (tools will be added in Phase 4).
 
 ## Problems solved
-- **Next.js 15+ Async Params**: Resolved the "params is a Promise" route error in `[chatId]/page.tsx` by correctly unwrapping it using `await params`.
-- **UI Polish**: Fixed multiple layout bugs including absolute positioning overlap of sidebar toggle buttons and inappropriately hardcoded active states in the chat history.
+- Overcame temporary network/package installation issues by successfully integrating the Langchain ecosystem manually.
 
 ## Current state
-- The Phase 2 Chat Experience is completely finished. The UI looks polished, matches the design mockups precisely, and scales well. 
+- The LangGraph Foundation (Task 06) is completed. 
+- The LangGraph application is compiled and exposed via `/api/chat`.
 
 ## Next session starts with
-- Move into **Phase 3: LangGraph Agent** (starting with task 06: LangGraph Foundation). See `context/progress-tracker.md`.
-- *Note:* We will need to run `pnpm run db:push` to push the new database schema to Neon, as the command was skipped in this session.
+- Move on to **Task 07: General Chat Tool**.
+- We need to wire up the frontend `ChatInput.tsx` and `MessageList.tsx` to communicate with `/api/chat`, ensuring that our Mock data is replaced with real conversation flow to and from the Gemini model.
 
 ## Open questions
 - None at this time.
