@@ -10,11 +10,11 @@ This is the single source of truth for project progress. Every AI session must u
 
 **Project:** Toolify
 
-**Current Phase:** Phase 3 — LangGraph Agent
+**Current Phase:** Phase 4 — Tool Calling
 
-**Last Completed:** Chat Page UI & Persistence (Phase 2)
+**Last Completed:** General Chat Tool (Phase 3)
 
-**Next Task:** LangGraph Foundation
+**Next Task:** Tavily Search Tool
 
 ---
 
@@ -37,8 +37,8 @@ This is the single source of truth for project progress. Every AI session must u
 
 ## Phase 3 — LangGraph Agent
 
-- [ ] 06 LangGraph Foundation
-- [ ] 07 General Chat Tool
+- [x] 06 LangGraph Foundation
+- [x] 07 General Chat Tool
 
 ---
 
