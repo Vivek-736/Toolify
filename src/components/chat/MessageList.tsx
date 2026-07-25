@@ -2,9 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { 
-  Copy, 
-  ThumbsUp, 
-  ThumbsDown, 
   Check, 
   ChevronDown 
 } from "lucide-react";
@@ -58,46 +55,36 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
                 </div>
               )}
 
-              <div
-                className={cn(
-                  "px-5 py-4 rounded-2xl relative group",
-                  message.role === "user"
-                    ? "bg-blue-50/80 text-slate-800 rounded-tr-sm border border-blue-100/50"
-                    : "bg-white text-slate-800 rounded-tl-sm border border-slate-200 shadow-sm"
-                )}
-              >
-                {/* Markdown parsing placeholder - just replacing newlines and basic bold for now */}
-                <div className="text-[15px] leading-relaxed whitespace-pre-wrap wrap-break-word">
-                  {typeof message.content === "string" 
-                    ? message.content.split('**').map((part, i) => 
-                        i % 2 === 1 ? <strong key={i} className="text-slate-900">{part}</strong> : part
-                      ) 
-                    : JSON.stringify(message.content)
-                  }
+              {(message.content || message.role === "user") && (
+                <div
+                  className={cn(
+                    "px-5 py-4 rounded-2xl relative group",
+                    message.role === "user"
+                      ? "bg-blue-50/80 text-slate-800 rounded-tr-sm border border-blue-100/50"
+                      : "bg-white text-slate-800 rounded-tl-sm border border-slate-200 shadow-sm"
+                  )}
+                >
+                  {/* Markdown parsing placeholder - just replacing newlines and basic bold for now */}
+                  <div className="text-[15px] leading-relaxed whitespace-pre-wrap wrap-break-word">
+                    {typeof message.content === "string" 
+                      ? message.content.split('**').map((part, i) => 
+                          i % 2 === 1 ? <strong key={i} className="text-slate-900">{part}</strong> : part
+                        ) 
+                      : JSON.stringify(message.content)
+                    }
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Message Footer */}
               <div className={cn(
                 "flex items-center gap-2 mt-2 text-slate-400"
               )}>
-                {message.role === "user" ? (
+                {message.role === "user" && (
                   <>
                     <span className="text-xs">Just now</span>
                     <Check className="h-3.5 w-3.5" />
                   </>
-                ) : (
-                  <div className="flex items-center gap-1">
-                    <button className="p-1.5 hover:bg-slate-100 rounded-md transition text-slate-400 hover:text-slate-600">
-                      <Copy className="h-4 w-4" />
-                    </button>
-                    <button className="p-1.5 hover:bg-slate-100 rounded-md transition text-slate-400 hover:text-slate-600">
-                      <ThumbsUp className="h-4 w-4" />
-                    </button>
-                    <button className="p-1.5 hover:bg-slate-100 rounded-md transition text-slate-400 hover:text-slate-600">
-                      <ThumbsDown className="h-4 w-4" />
-                    </button>
-                  </div>
                 )}
               </div>
             </div>
