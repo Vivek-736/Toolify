@@ -12,9 +12,9 @@ This is the single source of truth for project progress. Every AI session must u
 
 **Current Phase:** Phase 4 — Tool Calling
 
-**Last Completed:** General Chat Tool (Phase 3)
+**Last Completed:** Tavily Search Tool (Phase 4)
 
-**Next Task:** Tavily Search Tool
+**Next Task:** YouTube Summary Tool
 
 ---
 
@@ -44,7 +44,7 @@ This is the single source of truth for project progress. Every AI session must u
 
 ## Phase 4 — Tool Calling
 
-- [ ] 08 Tavily Search Tool
+- [x] 08 Tavily Search Tool
 - [ ] 09 YouTube Summary Tool
 - [ ] 10 Tool Routing
 

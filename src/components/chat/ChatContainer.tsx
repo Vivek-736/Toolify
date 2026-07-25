@@ -7,6 +7,7 @@ import { ChatInput } from "./ChatInput";
 export interface Message {
   role: "user" | "assistant";
   content: string;
+  toolInvocations?: { title: string }[];
 }
 
 interface ChatContainerProps {
@@ -42,7 +43,11 @@ export function ChatContainer({ initialMessages = [], welcomeContent }: ChatCont
       const data = await response.json();
       
       // Add AI response
-      setMessages((prev) => [...prev, { role: data.role, content: data.content }]);
+      setMessages((prev) => [...prev, { 
+        role: data.role, 
+        content: data.content,
+        toolInvocations: data.toolInvocations 
+      }]);
     } catch (error) {
       console.error(error);
       setMessages((prev) => [
