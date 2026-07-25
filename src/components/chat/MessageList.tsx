@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Copy, ThumbsUp, ThumbsDown, Check } from "lucide-react";
+import { 
+  Copy, 
+  ThumbsUp, 
+  ThumbsDown, 
+  Check, 
+  ChevronDown 
+} from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { Message } from "./ChatContainer";
@@ -41,6 +47,17 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
               "max-w-[85%] md:max-w-[75%] flex flex-col",
               message.role === "user" ? "items-end" : "items-start"
             )}>
+              {message.toolInvocations && (
+                <div className="mb-4 space-y-2">
+                  {message.toolInvocations.map((tool, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-slate-500 text-sm cursor-pointer hover:text-slate-700 transition">
+                      <span>{tool.title}</span>
+                      <ChevronDown className="h-4 w-4" />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div
                 className={cn(
                   "px-5 py-4 rounded-2xl relative group",
@@ -51,9 +68,12 @@ export function MessageList({ messages, isLoading = false }: MessageListProps) {
               >
                 {/* Markdown parsing placeholder - just replacing newlines and basic bold for now */}
                 <div className="text-[15px] leading-relaxed whitespace-pre-wrap wrap-break-word">
-                  {message.content.split('**').map((part, i) => 
-                    i % 2 === 1 ? <strong key={i} className="text-slate-900">{part}</strong> : part
-                  )}
+                  {typeof message.content === "string" 
+                    ? message.content.split('**').map((part, i) => 
+                        i % 2 === 1 ? <strong key={i} className="text-slate-900">{part}</strong> : part
+                      ) 
+                    : JSON.stringify(message.content)
+                  }
                 </div>
               </div>
 

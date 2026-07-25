@@ -1,30 +1,37 @@
-# Memory — Phase 3: General Chat Tool
+# Memory — Phase 4: Tavily Search Tool
 
-Last updated: 2026-07-25T11:15:03+05:30
+Last updated: 2026-07-25T12:09:15+05:30
 
 ## What was built
-- **State Management**: Created a new `ChatContainer.tsx` client component that centrally manages the `messages` and `isLoading` states for a conversation.
-- **API Integration**: Wired the `ChatContainer` to send HTTP POST requests to our `/api/chat` LangGraph endpoint. It optimistically adds user messages to the UI and appends AI responses when the request resolves.
-- **Refactored UI Components**: 
-  - `MessageList.tsx` was updated to accept dynamic `messages` props instead of using hardcoded mock data. Added an auto-scrolling mechanism and a sleek, animated typing indicator for loading states.
-  - `ChatInput.tsx` was converted to be fully controlled by its parent. It auto-resizes vertically, accepts an `onSubmit` handler, and disables itself while the model is generating a response.
-- **Dynamic Routing Updates**: Replaced disjointed UI components in both `src/app/dashboard/page.tsx` and `src/app/dashboard/[chatId]/page.tsx` with the unified `ChatContainer`. The welcome screen content is now gracefully handled as a prop for empty chats.
+
+- **Tavily Search Integration**: Installed `@langchain/tavily` and added the `TavilySearch` tool to the Gemini model in `src/lib/agent/nodes.ts`. Added a `toolNode` to execute the tools.
+- **Graph Routing**: Updated `src/lib/agent/graph.ts` to use a conditional edge that dynamically routes to the `toolNode` if a message contains `tool_calls` or `additional_kwargs.tool_calls`.
+- **API & UI Updates**: 
+  - Updated `src/app/api/chat/route.ts` to scan intermediate tool messages and pass `toolInvocations` to the frontend, allowing the UI to display "Searching the web...". 
+  - Updated the API to defensive-cast model output into a string.
+  - Updated `MessageList.tsx` in `src/components/chat/MessageList.tsx` to safely render stringified content and visually show tool usage to the user before the final answer.
 
 ## Decisions made
-- We adopted a "lifted state" approach via `ChatContainer` to keep the UI components (`MessageList`, `ChatInput`) purely presentational and reusable.
-- We opted for standard request/response polling for the initial chat implementation, saving token streaming capabilities for Phase 5.
+
+- Kept the agent tool check generic (`msg.tool_calls`) so that the graph will dynamically route to any future tool (like YouTube Summary) without changing the routing logic.
+- Decided to add defensive checks in `MessageList.tsx` to handle situations where `message.content` is an array or object block instead of crashing the UI with `.split()`.
 
 ## Problems solved
-- Solved input overlapping and fixed UI layout shifting by introducing a constrained auto-resizing textarea in `ChatInput.tsx`.
-- Ensured smooth UX by automatically scrolling the user to the bottom of the `MessageList` whenever a new message is added or loading state changes.
+
+- Fixed a bug where LangGraph was ending immediately because we were checking `additional_kwargs.tool_calls` instead of the newer `@langchain/core` standard `tool_calls`.
+- Fixed a UI crash (`message.content.split is not a function`) by ensuring the backend always flattens the AI response into a string if it comes back as structured blocks.
+- Resolved TypeScript mismatches around the `TavilySearch` class name.
 
 ## Current state
-- **Phase 3 (LangGraph Agent)** is now 100% complete.
-- The Chat UI is fully wired to Gemini 2.5 Flash and is ready for everyday conversational queries.
+
+- **Phase 4 (Tavily Search Tool)** is complete. The agent can successfully browse the web in real-time, execute queries, and return synthesized responses.
+- The Git branch `tavily-search-tool` has been created by the developer.
 
 ## Next session starts with
-- Move into **Phase 4: Tool Calling** (starting with **Task 08: Tavily Search Tool**).
-- We will need to set up the `@langchain/community` Tavily tools and wire them into our `src/lib/agent/nodes.ts` and `src/lib/agent/graph.ts` routing logic.
+
+- **Task 09: YouTube Summary Tool** (still under Phase 4).
+- We will need to create a new Langchain Tool that can extract a YouTube transcript from a URL and summarize it.
 
 ## Open questions
+
 - None at this time.
