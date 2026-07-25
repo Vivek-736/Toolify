@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, Globe, Sparkles, Mic, ArrowUp } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -60,25 +60,9 @@ export function ChatInput({ onSubmit, disabled = false }: ChatInputProps) {
           }}
         />
         
-        <div className="flex items-center justify-between px-3 pb-3 pt-1">
-          {/* Left Actions */}
-          <div className="flex items-center gap-1.5">
-            <Button type="button" variant="ghost" size="icon" disabled={disabled} className="h-9 w-9 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100">
-              <Plus className="h-5 w-5" />
-            </Button>
-            <Button type="button" variant="ghost" size="icon" disabled={disabled} className="h-9 w-9 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100">
-              <Globe className="h-4 w-4" />
-            </Button>
-            <Button type="button" variant="ghost" size="icon" disabled={disabled} className="h-9 w-9 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100">
-              <Sparkles className="h-4 w-4" />
-            </Button>
-          </div>
-
+        <div className="flex items-center justify-end px-3 pb-3 pt-1">
           {/* Right Actions */}
           <div className="flex items-center gap-2">
-            <Button type="button" variant="ghost" size="icon" disabled={disabled} className="h-9 w-9 rounded-full text-slate-500 hover:text-slate-700 hover:bg-slate-100">
-              <Mic className="h-5 w-5" />
-            </Button>
             <Button 
               type="submit" 
               disabled={!value.trim() || disabled}

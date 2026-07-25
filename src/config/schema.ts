@@ -10,6 +10,7 @@ export const chatsTable = pgTable("chats", {
     id: varchar("id", { length: 36 }).primaryKey(),
     userId: integer("user_id").references(() => usersTable.id, { onDelete: 'cascade' }).notNull(),
     title: varchar("title", { length: 255 }).notNull(),
+    preview: text("preview"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

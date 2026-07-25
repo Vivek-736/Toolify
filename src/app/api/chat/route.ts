@@ -22,48 +22,44 @@ export async function POST(req: Request) {
       return aiMsg;
     });
 
-    // Invoke the compiled LangGraph agent
-    const finalState = await app.invoke({
-      messages: langchainMessages
-    });
-
-    // Extract newly generated messages
-    const newMessages = finalState.messages.slice(langchainMessages.length);
+    const eventStream = await app.streamEvents({ messages: langchainMessages }, { version: "v2" });
     
-    // Check for tool invocations to pass to the frontend
-    const toolInvocations: { title: string }[] = [];
-    newMessages.forEach((msg: any) => {
-      const toolCalls = msg.tool_calls || msg.additional_kwargs?.tool_calls || [];
-      toolCalls.forEach((tc: any) => {
-        const name = tc.function?.name || tc.name;
-        if (name && name.includes("tavily")) {
-          toolInvocations.push({ title: "Searching the web..." });
-        } else if (name && name.includes("youtube")) {
-          toolInvocations.push({ title: "Extracting transcript..." });
-        } else {
-          toolInvocations.push({ title: `Using tool: ${name}...` });
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder();
+        try {
+          for await (const event of eventStream) {
+            if (event.event === "on_chat_model_stream") {
+              const chunk = event.data.chunk;
+              if (chunk && chunk.content && typeof chunk.content === "string") {
+                const payload = JSON.stringify({ type: "content", text: chunk.content });
+                controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
+              }
+            } else if (event.event === "on_tool_start") {
+              const name = event.name;
+              let title = `Using tool: ${name}...`;
+              if (name.includes("tavily")) title = "Searching the web...";
+              if (name.includes("youtube")) title = "Extracting transcript...";
+              
+              const payload = JSON.stringify({ type: "tool", title });
+              controller.enqueue(encoder.encode(`data: ${payload}\n\n`));
+            }
+          }
+        } catch (err) {
+          console.error("Stream error:", err);
+          controller.enqueue(new TextEncoder().encode(`data: ${JSON.stringify({ type: "error", message: "Stream error occurred" })}\n\n`));
+        } finally {
+          controller.close();
         }
-      });
+      }
     });
 
-    const lastMessage = finalState.messages[finalState.messages.length - 1];
-
-    // Ensure content is a string
-    let finalContent = "";
-    if (typeof lastMessage.content === "string") {
-      finalContent = lastMessage.content;
-    } else if (Array.isArray(lastMessage.content)) {
-      finalContent = lastMessage.content.map((c: any) => c.text || JSON.stringify(c)).join("\n");
-    } else {
-      finalContent = JSON.stringify(lastMessage.content);
-    }
-
-    return NextResponse.json({ 
-      role: 'assistant', 
-      content: finalContent,
-      toolInvocations: toolInvocations.length > 0 ? toolInvocations : undefined,
-      // We don't strictly need to return raw tool_calls for this simple implementation
-      // because we just append the final assistant message to the frontend state.
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive"
+      }
     });
 
   } catch (error: any) {

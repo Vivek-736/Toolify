@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { UserButton, useUser } from "@clerk/nextjs";
@@ -9,35 +9,41 @@ import { Plus, PanelLeftClose, MessageSquare } from "lucide-react";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const CHAT_HISTORY = [
-  {
-    group: "Today",
-    chats: [
-      { id: "1", title: "YouTube Summary: Next.js 15", time: "10:24 AM", active: true },
-      { id: "2", title: "Explain useEffect in React", time: "9:15 AM", active: false },
-      { id: "3", title: "Best practices for Next.js apps", time: "Yesterday", active: false },
-    ],
-  },
-  {
-    group: "Previous 7 Days",
-    chats: [
-      { id: "4", title: "Tailwind CSS Grid Layout", time: "May 18", active: false },
-      { id: "5", title: "Difference between SQL and NoSQL", time: "May 17", active: false },
-    ],
-  },
-  {
-    group: "Previous 30 Days",
-    chats: [
-      { id: "6", title: "JavaScript Array Methods", time: "May 10", active: false },
-    ],
-  },
-];
+interface SidebarProps {
+  initialChats?: any[];
+}
 
-export function Sidebar() {
+export function Sidebar({ initialChats = [] }: SidebarProps) {
   const { user } = useUser();
   const params = useParams();
   const currentChatId = params?.chatId as string;
   const [collapsed, setCollapsed] = useState(false);
+
+  const groupedChats = useMemo(() => {
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    
+    const groups = [
+      { group: "Today", chats: [] as any[] },
+      { group: "Previous 7 Days", chats: [] as any[] },
+      { group: "Previous 30 Days", chats: [] as any[] },
+      { group: "Older", chats: [] as any[] },
+    ];
+    
+    initialChats.forEach(chat => {
+      const d = new Date(chat.updatedAt);
+      if (d >= today) groups[0].chats.push(chat);
+      else if (d >= sevenDaysAgo) groups[1].chats.push(chat);
+      else if (d >= thirtyDaysAgo) groups[2].chats.push(chat);
+      else groups[3].chats.push(chat);
+    });
+    
+    return groups.filter(g => g.chats.length > 0);
+  }, [initialChats]);
 
   return (
     <aside 
@@ -113,7 +119,7 @@ export function Sidebar() {
 
       {/* Chat History List */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar mt-4">
-        {CHAT_HISTORY.map((group, i) => (
+        {groupedChats.map((group, i) => (
           <div key={i} className="mb-6 px-3">
             {!collapsed && (
               <h3 className="text-xs font-semibold text-slate-500 px-3 mb-2 uppercase tracking-wider whitespace-nowrap">
@@ -123,6 +129,10 @@ export function Sidebar() {
             <div className={cn("space-y-1", collapsed && "flex flex-col items-center")}>
               {group.chats.map((chat) => {
                 const isActive = chat.id === currentChatId;
+                // Basic formatting for time
+                const d = new Date(chat.updatedAt);
+                const timeString = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                
                 return (
                   <Link key={chat.id} href={`/dashboard/${chat.id}`}>
                     <div 
@@ -160,18 +170,20 @@ export function Sidebar() {
                             )}>
                               {chat.title}
                             </p>
-                            <p className={cn(
-                              "text-xs truncate",
-                              isActive ? "text-blue-600/70" : "text-slate-400"
-                            )}>
-                              What are the best practices for...
-                            </p>
+                            {chat.preview && (
+                              <p className={cn(
+                                "text-xs truncate",
+                                isActive ? "text-blue-600/70" : "text-slate-400"
+                              )}>
+                                {chat.preview}
+                              </p>
+                            )}
                           </div>
                           <span className={cn(
                             "text-[10px] whitespace-nowrap mt-1",
                             isActive ? "text-blue-500" : "text-slate-400"
                           )}>
-                            {chat.time}
+                            {timeString}
                           </span>
                         </div>
                       )}

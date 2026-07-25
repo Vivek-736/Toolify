@@ -1,10 +1,15 @@
 import React from "react";
-import { Sidebar } from "@/components/chat/Sidebar";
+import { 
+    Sidebar 
+} from "@/components/chat/Sidebar";
+import { getChats } from "@/app/actions/chat";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+    const chats = await getChats();
+    
     return (
         <div className="flex h-screen overflow-hidden bg-white">
-            <Sidebar />
+            <Sidebar initialChats={chats} />
 
             <main className="flex-1 flex flex-col relative">
                 {children}
