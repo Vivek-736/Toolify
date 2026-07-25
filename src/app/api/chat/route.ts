@@ -38,6 +38,8 @@ export async function POST(req: Request) {
         const name = tc.function?.name || tc.name;
         if (name && name.includes("tavily")) {
           toolInvocations.push({ title: "Searching the web..." });
+        } else if (name && name.includes("youtube")) {
+          toolInvocations.push({ title: "Extracting transcript..." });
         } else {
           toolInvocations.push({ title: `Using tool: ${name}...` });
         }

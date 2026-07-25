@@ -3,6 +3,10 @@ import { GraphState } from "./state";
 import { RunnableConfig } from "@langchain/core/runnables";
 import { TavilySearch } from "@langchain/tavily";
 import { ToolNode } from "@langchain/langgraph/prebuilt";
+import { YoutubeTranscript } from "youtube-transcript";
+import { tool } from "@langchain/core/tools";
+import { z } from "zod";
+import { SystemMessage } from "@langchain/core/messages";
 
 // Initialize the Gemini model
 const model = new ChatGoogleGenerativeAI({
@@ -15,7 +19,25 @@ const tavilyTool = new TavilySearch({
   maxResults: 3,
 });
 
-const tools = [tavilyTool];
+const youtubeTranscriptTool = tool(
+  async ({ url }) => {
+    try {
+      const transcript = await YoutubeTranscript.fetchTranscript(url);
+      return transcript.map(t => t.text).join(" ");
+    } catch (error: any) {
+      return `Failed to fetch transcript: ${error.message}`;
+    }
+  },
+  {
+    name: "youtube_transcript",
+    description: "Extracts the transcript of a YouTube video given its URL. Returns the full text spoken in the video.",
+    schema: z.object({
+     url: z.string().describe("The full URL of the YouTube video"),
+    }),
+  }
+);
+
+const tools = [tavilyTool, youtubeTranscriptTool];
 const modelWithTools = model.bindTools(tools);
 
 /**
@@ -24,12 +46,20 @@ const modelWithTools = model.bindTools(tools);
  */
 export const toolNode = new ToolNode<typeof GraphState.State>(tools);
 
+const SYSTEM_PROMPT = `You are a helpful AI assistant. You have access to the following tools:
+- tavily_search: Use this for retrieving current events, real-time information, and answering questions that require live web search.
+- youtube_transcript: Use this when the user provides a YouTube URL and asks for a summary, explanation, or questions about the video.
+
+If no tool is required (e.g. general coding, writing, brainstorming, math), answer directly based on your own knowledge. 
+Do not guess information if you can use a tool to get accurate results.`;
+
 /**
  * Node: callModel
  * Invokes the Gemini model with the current conversation history.
  */
 export async function callModel(state: typeof GraphState.State, config?: RunnableConfig) {
   const { messages } = state;
-  const response = await modelWithTools.invoke(messages, config);
+  const systemMessage = new SystemMessage(SYSTEM_PROMPT);
+  const response = await modelWithTools.invoke([systemMessage, ...messages], config);
   return { messages: [response] };
 }
